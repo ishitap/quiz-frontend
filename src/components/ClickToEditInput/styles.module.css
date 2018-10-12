@@ -1,0 +1,35 @@
+.titleContainer {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+}
+
+.titleContainer input.titleInput, input.titleInput:hover {
+  border: 1px solid rgba(0,0,0,0);
+  background-color: rgba(0,0,0,0);
+  color: rgba(0,0,0,0.65);
+  cursor: pointer;
+}
+
+.invisibleText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 6px 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: baseline;
+}
+
+.invisibleText span {
+  visibility: hidden;
+  display: block;
+  margin-right: 8px;
+}
+
+span.invisibleTextHelper, .icon {
+  visibility: visible;
+  color: rgba(0,0,0,0.4);
+  font-weight: normal;
+  font-size: 12px;
+}

@@ -1,0 +1,11 @@
+.title {
+  color: white;
+  float: left;
+}
+
+.logout {
+  display: flex;
+  color: white;
+  float: right;
+  align-items: center;
+}

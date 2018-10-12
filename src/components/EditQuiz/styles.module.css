@@ -1,0 +1,24 @@
+.titleContainer {
+  display: flex;
+}
+
+.titleContainer > *:first-child {
+  flex: 1;
+  flex-grow: 1;
+}
+
+.titleContainer:last-child {
+  flex: 0;
+}
+
+.titleContainer input {
+  font-weight: bold;
+}
+
+.divider span {
+  font-size: 12px !important;
+}
+
+.card {
+  margin-bottom: 16px;
+}
