@@ -1,8 +1,8 @@
 import update from 'immutability-helper'
 
 // reducer key names (top-level fields of the reducer):
-export const ACTIVE_QUIZ = 'active_quiz'
-export const MODE = 'mode'
+// could use combine reducer but whatever
+export const USER = 'user'
 export const QUIZZES = 'quizzes'
 export const QUESTIONS = 'questions'
 
@@ -12,16 +12,13 @@ export const ADD_ITEM = 'ADD_ITEM'
 export const DELETE_ITEM = 'DELETE_ITEM'
 export const EDIT_ITEM = 'EDIT_ITEM'
 
-export const EDIT_MODE = 'edit'
-export const PLAY_MODE = 'play'
-
 const defaultState = {
+  user: null,
   quizzes: [],
   questions: [],
 }
 
-// the action reducer
-export function quizApp(state = defaultState, action) {
+export function quizApp(state = {}, action) {
   switch(action.type) {
     case SET_DATA: 
       return setData(state, action)
@@ -39,7 +36,7 @@ export function quizApp(state = defaultState, action) {
 
 function setData(state, action) {
   let ns = update(state, {
-    $merge: action.data
+    $merge: { [action.name]: action.data }
   })
   console.log(ns)
   return ns
@@ -54,6 +51,7 @@ function addItem(state, action) {
 }
 
 function deleteItem(state, action) {
+  console.log(state.questions)
   return update(state, {
     [action.name]: {
       $splice: [[action.index, 1]]

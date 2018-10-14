@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { List, Button, Icon } from 'antd'
 import PageLayout from './PageLayout'
 import * as actions from '../actions'
@@ -25,21 +26,17 @@ class QuizList extends React.Component {
   }
 
   renderListItem(item, index) {
-    let { title } = item
-    let actions = [<Icon onClick={()=>this.handleEditClick(index)} type="edit" />]
+    let { title, id } = item
+    let actions = [<Link to={`/edit/${id}`}><Icon type="edit"/></Link>]
     return (
-      <List.Item key={index} actions={actions} onClick={() => this.handleTitleClick(index)}>
-        <a>{title}</a>
-      </List.Item>
+        <List.Item
+          key={index}
+          actions={actions}
+          onClick={() => this.props.history.push({ pathname: `/play/${id}`})}
+        >
+          <a>{title}</a>
+        </List.Item>
     )
-  }
-
-  handleEditClick(index) {
-    this.props.dispatch(actions.startEditingQuiz(index))
-  }
-
-  handleTitleClick() {
-
   }
 }
 

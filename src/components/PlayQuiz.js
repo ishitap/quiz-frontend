@@ -1,85 +1,46 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+import { Button, Card, Modal } from 'antd'
+import Question from './EditQuiz/EditQuestion'
+import PageLayout from './PageLayout'
+import styles from './EditQuiz/styles.module.css'
+import * as actions from '../actions'
 
-export default class PlayQuiz extends React.Component {
+class PlayQuiz extends React.Component {
   constructor(props) {
+    super(props)
     this.state = {
-      currentQuestionIndex: 0,
       shouldShowReview: false
     }
   }
+
   render() {
-    return false
-    // let { currentQuestion, shouldShowReview } = this.state
-    // return (
-    //   <div>
-    //     <PlayQuestion {...currentQuestion} />
-    //     <QuizReviewModal visible={shouldShowReview}/>
-    //   </div> 
-    // )
+    let { quiz, questions } = this.props
+    return (
+      <PageLayout title="Play Quiz">
+        <Card style={{marginBottom: 16}}>
+          <div className={styles.titleContainer}>
+            <h3>{quiz.title}</h3>
+          </div>
+        </Card>
+        <Card>
+          { questions.map((e, i) => <Question 
+            key={i}
+            {...e}
+            expanded={true}
+          />)}
+        </Card>
+      </PageLayout>
+    )
   }
 }
 
-
-/*
-
-redux state:
-
-quizzes: {} // 
-
-fetchquizzes
-fetchquestions(quiz_id)
-createquiz
-deletequiz(quiz_id)
-editquiz(quiz_id)
-editquestion(quiz_id, question_id)
-deletequestion(quiz_id, question_id)
-addquestion(quiz_id)
-
-updateQuizzes(action) {
-  
+const mapStateToProps = state => {
+  return {
+    active_quiz: state.active_quiz,
+    quiz: state.quizzes[state.active_quiz],
+    questions: state.questions
+  }
 }
 
-fetchQuestions(action, state) {
-  updateQuestions(state, action.quiz_id, { 
-    [index]: {
-      $set: [action.data]
-    } 
-  })
-}
-
-updateQuestions
-
-login
-logout
-
-fetchQuestions(action, state) {
-  let ns = update(state, {
-    [action.quiz_id]: {
-      questions: {
-        $set: action.data
-      }
-    }
-  })
-}
-
-fetchQuizzes(action, state) {
-  let ns = update(state, {
-    $set: action.data
-  })
-}
-
-createQuiz(action, state) {
-  let ns = update(state, {
-    $push: [action.data]
-  })
-}
-
-deleteQuiz(action, state) {
-  let ns = update(state, {
-    $splice: [[index, 1]]
-  })
-}
-
-*/
-
+export default connect(mapStateToProps)(PlayQuiz)

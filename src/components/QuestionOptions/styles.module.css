@@ -1,0 +1,26 @@
+.list {
+  display: flex;
+  align-items: center;
+}
+
+.deleteIconArea {
+  min-width: 24px;
+  color: lightgray;
+  margin-left: 8px;
+}
+
+i {
+  align-self: center;
+  cursor: pointer;
+}
+
+.check {
+  font-size: 16px;
+  color: rgba(0,0,0,0.2);
+  margin-right: 8px;
+}
+
+.check.marked {
+  color: lightgreen;
+}
+

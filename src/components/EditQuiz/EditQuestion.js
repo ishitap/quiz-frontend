@@ -1,63 +1,69 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import update from 'immutability-helper'
-import { List, Icon, Input, Card } from 'antd'
+import { List, Icon, Card } from 'antd'
 import ClickToEditInput from '../ClickToEditInput'
+import QuestionOptions from '../QuestionOptions'
+import * as actions from '../../actions'
 
 const MIN_OPTIONS = 2
 const MAX_OPTIONS = 10
 
-export default class EditQuestion extends React.Component {
+class Question extends React.Component {
   constructor(props) {
     super(props)
 
-    // makes sure options has at *least* two options
-    let draftOptions = update(props.options || [], {})
-    for (let i = draftOptions.length; i < MIN_OPTIONS; i++) {
-      draftOptions.push("Option " + (i+1))
-    }
     this.state = {
-      expanded: false,
-      titleDraft: props.title || "Question 1",
-      optionsDraft: draftOptions,
-      correct: props.correct || 0,
+      titleDraft: props.title,
+      optionsDraft: update(props.options, {}),
+      correct: props.correct,
     }
-    this.renderOption = this.renderOption.bind(this)
+    this.handleMarkCorrect = this.handleMarkCorrect.bind(this)
+    this.handleEditOption = this.handleEditOption.bind(this)
+    this.handleAddOption = this.handleAddOption.bind(this)
+    this.handleRemoveOption = this.handleRemoveOption.bind(this)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      titleDraft: props.title,
+      optionsDraft: update(props.options, {}),
+      correct: props.correct,
+    })
   }
 
   render() {
-    let { titleDraft, optionsDraft, expanded } = this.state
+    const { titleDraft, optionsDraft, correct } = this.state
+    const { onToggle, onDelete, onSave, expanded } = this.props
+    const actions = [
+      <Icon type="delete" onClick={onDelete}/>,
+      "", // using this as a spacer instead of writing a custom actions bar...
+      <span onClick={onToggle}>Cancel</span>,
+      <a style={{color: 'blue'}} onClick={onSave}>Save</a>
+    ]
     return (
       <div style={{marginBottom: 16}}>
-        <Card actions={expanded && [<Icon type="delete" />, "", "Cancel", "Save"]}>
-        <ClickToEditInput
-          isEditing={expanded}
-          value={titleDraft}
-          onChange={e => this.setState({ titleDraft: e.target.value})}
-          onToggle={e => this.setState({ expanded: !expanded })}
-        />
-        { expanded && [
-          <List
-            size="small"
-            split={false}
-            dataSource={optionsDraft}
-            renderItem={this.renderOption}
-          />,
-          optionsDraft.length < MAX_OPTIONS && <a onClick={this.handleAddOption.bind(this)}>Add another option</a>
-        ]}
+        <Card actions={expanded && actions}>
+        <div style={{marginRight: 32, marginBottom: expanded && 16}}>
+          <ClickToEditInput
+            isEditing={expanded}
+            value={titleDraft}
+            onChange={e => this.setState({ titleDraft: e.target.value})}
+            onToggle={onToggle}
+          />
+        </div>
+        { expanded &&
+          <QuestionOptions
+            options={optionsDraft}
+            correct={correct}
+            onMarkCorrect={this.handleMarkCorrect}
+            onChange={this.handleEditOption}
+            onAdd={optionsDraft.length < MAX_OPTIONS && this.handleAddOption}
+            onDelete={optionsDraft.length > MIN_OPTIONS && this.handleRemoveOption}
+          />
+        }
         </Card>
       </div>
-    )
-  }
-
-  renderOption(item, index) {
-    let { optionsDraft, correct } = this.state
-    let actions = optionsDraft.length > MIN_OPTIONS && [<Icon type="delete" onClick={() => this.handleRemoveOption(index)}/>]
-    return (
-      <List.Item key={index} actions={actions}>
-        <CorrectOptionMarker marked={correct === index} onClick={() => this.handleMarkCorrect(index)} />
-        <Input size="small" value={item} onChange={e => this.handleEditOption(index, e.target.value)}/>
-      </List.Item>
     )
   }
 
@@ -91,8 +97,4 @@ export default class EditQuestion extends React.Component {
   }
 }
 
-function CorrectOptionMarker({ marked, ...rest }) {
-  return (
-    <Icon type='check-circle' style={{color: marked && 'lightgreen'}} {...rest} />
-  )
-}
+export default connect(() => {})(Question)
