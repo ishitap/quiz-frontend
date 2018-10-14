@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { Input, Button, Card } from 'antd'
+import { Input, Button, Card, Form } from 'antd'
 import * as actions from '../../actions'
 import { shouldLogin } from '../../auth'
 import * as styles from './styles.module.css'
@@ -49,9 +49,11 @@ class Login extends React.Component {
     return (
       <div className={styles.login}>
         <Card>
+          <Form>
           { this.renderInput('username') }
           { this.renderInput('password') }
           { this.renderError() }
+          </Form>
           <Button 
             type="primary"
             disabled={!this.state.username.length || !this.state.password.length} 
@@ -66,13 +68,15 @@ class Login extends React.Component {
 
   renderInput(name) {
     return (
-      <Input 
-        type={name === "password" ? "password" : "text"} 
-        value={this.state[name]} 
-        onChange={(e) => this.handleChange(name, e.target.value)}
-        name={name} 
-        placeholder={name} 
-      />
+      <Form.Item>
+        <Input 
+          type={name === "password" ? "password" : "text"} 
+          value={this.state[name]} 
+          onChange={(e) => this.handleChange(name, e.target.value)}
+          name={name} 
+          placeholder={name} 
+        />
+      </Form.Item>
     )
   }
 

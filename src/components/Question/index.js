@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import update from 'immutability-helper'
 import { List, Icon, Card } from 'antd'
-import ClickToEditInput from './ClickToEditInput'
-import QuestionOptions from './QuestionOptions'
-import * as actions from '../actions'
+import ClickToEditInput from '../ClickToEditInput'
+import QuestionOptions from '../QuestionOptions'
+import * as actions from '../../actions'
+import styles from './styles.module.css'
 
-const MIN_OPTIONS = 2
-const MAX_OPTIONS = 10
+const MIN_OPTS = 2
+const MAX_OPTS = 10
 
 // if props.onSave is present, Question becomes Editable
 // ie. it will be used in EditQuiz, not PlayQuiz
@@ -15,7 +16,6 @@ const MAX_OPTIONS = 10
 class Question extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
       title: props.title,
       options: update((props.options || []), {}),
@@ -36,18 +36,14 @@ class Question extends React.Component {
   }
 
   render() {
-    const { title, options, correct } = this.state
-    const { onToggle, onSave, expanded } = this.props
+    const { options, correct } = this.state
+    const { onSave, expanded } = this.props
+    const len = options.length
     return (
       <div style={{marginBottom: 16}}>
         <Card actions={this.renderActionsBar()}>
         <div style={{marginRight: 32, marginBottom: expanded && 16}}>
-          { onSave ? <ClickToEditInput
-            isEditing={expanded}
-            value={title}
-            onChange={e => this.setState({ title: e.target.value})}
-            onToggle={onToggle}
-          /> : <span>{title}</span> } 
+          {this.renderQuestionTitle()}
         </div>
         { expanded &&
           <QuestionOptions
@@ -55,12 +51,28 @@ class Question extends React.Component {
             correct={correct}
             onMarkCorrect={this.handleMarkCorrect}
             onChange={onSave && this.handleEditOption}
-            onAdd={onSave && options.length < MAX_OPTIONS && this.handleAddOption}
-            onDelete={onSave && options.length > MIN_OPTIONS && this.handleRemoveOption}
+            onAdd={onSave && len < MAX_OPTS && this.handleAddOption}
+            onDelete={onSave && len > MIN_OPTS && this.handleRemoveOption}
           />
         }
         </Card>
       </div>
+    )
+  }
+
+  renderQuestionTitle() {
+    const { title } = this.state
+    const { onSave, onToggle, expanded } = this.props
+    if (!onSave) {
+      return <span>{title}</span>
+    }
+    return (
+      <ClickToEditInput
+        isEditing={expanded}
+        value={title}
+        onChange={e => this.setState({ title: e.target.value})}
+        onToggle={onToggle}
+      />
     )
   }
 

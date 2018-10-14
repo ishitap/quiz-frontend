@@ -37,4 +37,13 @@ export default class EditTitle extends React.Component {
       this.inputRef.current.focus()
     })
   }
+
+  handleUpdateTitle() {
+    this.props.onUpdateTitle({ title: this.state.draft })
+      .then(res => {
+        if (res) {
+          this.setState({ isEditing: false })
+        }
+      })
+  }
 }

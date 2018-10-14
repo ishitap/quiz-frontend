@@ -23,8 +23,18 @@ class EditQuiz extends React.Component {
         <QuizDetail id={match.params.id}>
           <Card style={{marginBottom: 16}}>
             <div className={styles.titleContainer}>
-              <EditTitle title={quiz && quiz.title} />
-              <Button onClick={this.handleDeleteQuiz.bind(this)} type="danger" icon="delete" ghost>Delete quiz</Button>
+              <EditTitle
+                title={quiz && quiz.title}
+                onUpdateTitle={this.handleUpdateQuiz}
+              />
+              <Button 
+                onClick={this.handleDeleteQuiz.bind(this)}
+                type="danger"
+                icon="delete"
+                ghost
+              >
+                Delete quiz
+              </Button>
             </div>
           </Card>
           <Card>
@@ -36,12 +46,21 @@ class EditQuiz extends React.Component {
               onDelete={() => this.handleDeleteQuestion(i)}
               onSave={(data) => this.handleUpdateQuestion(i, data)}
             />)}
-            <Button type="primary" icon="plus" onClick={this.handleAddQuestion.bind(this)}>Add a question</Button>
+            <Button
+              type="primary"
+              icon="plus"
+              onClick={this.handleAddQuestion.bind(this)}
+            >
+              Add a question
+            </Button>
           </Card>
         </QuizDetail>
       </PageLayout>
     )
   }
+
+
+  // --- EVENT HANDLERS
 
   handleAddQuestion() {
     const { dispatch, questions, match } = this.props
@@ -72,6 +91,11 @@ class EditQuiz extends React.Component {
     this.setState({ expanded: this.state.expanded === i ? -1 : i})
   }
 
+  handleUpdateQuiz(data) {
+    let { dispatch, match, quizIndex } = this.props
+    //return dispatch(actions.updateQuiz(match.params.id, quizIndex, data))
+  }
+
   handleDeleteQuiz(i) {
     Modal.confirm({
       title: "Delete quiz?",
@@ -84,10 +108,12 @@ class EditQuiz extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = ({ quizzes, questions }, { match }) => {
+  let index = quizzes.findIndex(e => e._id === match.params.id)
   return {
-    quiz: state.quizzes.find(e => e._id === props.match.params.id),
-    questions: state.questions,
+    quizIndex: index,
+    quiz: index > -1 && quizzes[index],
+    questions: questions,
   }
 }
 
