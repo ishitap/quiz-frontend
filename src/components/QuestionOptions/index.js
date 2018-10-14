@@ -22,13 +22,13 @@ export default function QuestionOptions({ options, correct, onMarkCorrect, onCha
 
   return (
     <div>
-      <List
+      { options && options.length ? <List
         size="small"
         split={false}
         dataSource={options}
         renderItem={renderOption}
-      />
-      { onAdd && <a onClick={onAdd}>Add another option</a> }
+      /> : false }
+      { onAdd && <a onClick={onAdd}>{`Add an${options && options.length ? 'other' : ''} option`}</a> }
     </div>
   )
 }

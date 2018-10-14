@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styles from './style.module.css'
 
-function PageLayout({ mode, title, actions, children }) {
+function PageLayout({ mode, title, actions, home, children }) {
   return (
     <div>
       <div>
-        {mode !== 'home' && 'Back to all quizzes'}
+        {!home && <Link to='/'>Back to all quizzes</Link>}
       </div>
       <div className={styles.header}>
         <h2>{title}</h2>

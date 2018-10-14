@@ -22,11 +22,11 @@ export function login(data) {
 export function getQuizzes(data) {
   return dispatch => {
     return api.get('/quizzes')
-      .then((e, r) => {
-        if (e || !r.ok) {
-          return e
+      .then(res => {
+        if (!res.ok) {
+          return res
         } else {
-          dispatch(setSuccess(QUIZZES, r.body))
+          return dispatch(setSuccess(QUIZZES, res.body))
         }
       })
   }
@@ -35,11 +35,11 @@ export function getQuizzes(data) {
 export function getQuestions(quizID) {
   return dispatch => {
     return api.get(`/quizzes/${quizID}/questions`)
-      .then((e, r) => {
-        if (e || !r.ok) {
-          return e
+      .then(res => {
+        if (!res.ok) {
+          return res
         } else {
-          dispatch(setSuccess(QUESTIONS, r.body))
+          return dispatch(setSuccess(QUESTIONS, res.body.questions))
         }
       })
   }
@@ -48,11 +48,12 @@ export function getQuestions(quizID) {
 export function createQuiz(data) {
   return dispatch => {
     return api.post('/quizzes')
-      .then((e, r) => {
-        if (e || !r.ok) {
-          return e
+      .send(data)
+      .then(res => {
+        if (!res.ok) {
+          return null
         } else {
-          dispatch(createSuccess(QUIZZES, r.body))
+          return dispatch(createSuccess(QUIZZES, res.body))
         }
       })
   }
@@ -61,11 +62,29 @@ export function createQuiz(data) {
 export function createQuestion(quizID, data) {
   return dispatch => {
     return api.post(`/quizzes/${quizID}/questions`)
-      .then((e, r) => {
-        if (e || !r.ok) {
-          return e
+      .send(data)
+      .then(res => {
+        if (!res.ok) {
+          return null
         } else {
-          dispatch(createSuccess(QUESTIONS, r.body))
+          // ugh super annoying it returns the whole quiz object 
+          // so now we have to get the question we just created out
+          let q = res.body.questions
+          return dispatch(createSuccess(QUESTIONS, q[q.length-1]))
+        }
+      })
+  }
+}
+
+export function updateQuestion(quizID, questionID, index, data) {
+  return dispatch => {
+    return api.put(`/quizzes/${quizID}/questions/${questionID}`)
+      .send(data)
+      .then(res => {
+        if (!res.ok) {
+          return null
+        } else {
+          return dispatch(updateSuccess(QUESTIONS, index, data))
         }
       })
   }

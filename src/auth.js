@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode'
 
-const USER_KEY = 'user'
+const USER_KEY = 'user2'
 
 export function setUser(json) {
   window.localStorage.setItem(USER_KEY, JSON.stringify(json))

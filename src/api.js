@@ -19,3 +19,8 @@ export function post(path) {
   return request.post(host + path)
     .set(headers())
 }
+
+export function put(path) {
+  return request.put(host + path)
+    .set(headers())
+}

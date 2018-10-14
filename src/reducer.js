@@ -1,4 +1,5 @@
 import update from 'immutability-helper'
+import { getUser } from './auth'
 
 // reducer key names (top-level fields of the reducer):
 // could use combine reducer but whatever
@@ -13,12 +14,12 @@ export const DELETE_ITEM = 'DELETE_ITEM'
 export const EDIT_ITEM = 'EDIT_ITEM'
 
 const defaultState = {
-  user: null,
+  user: getUser(),
   quizzes: [],
   questions: [],
 }
 
-export function quizApp(state = {}, action) {
+export function quizApp(state = defaultState, action) {
   switch(action.type) {
     case SET_DATA: 
       return setData(state, action)

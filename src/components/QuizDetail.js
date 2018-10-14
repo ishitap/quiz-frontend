@@ -1,19 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {BrowserRouter as Route} from 'react-router-dom'
-import EditQuiz from './EditQuiz'
-import PlayQuiz from './PlayQuiz'
+import * as actions from '../actions'
 
 class QuizDetail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       notFound: false,
+      loadingQuizzes: true,
+      loadingQuestions: true,
     }
   }
 
   componentDidMount() {
-    // fetch everything...
+    this.setState({ loadingQuestions: true, loadingQuizzes: true })
+
+    // could load just one quiz instead of all but oh well
+    this.props.dispatch(actions.getQuizzes())
+      .then(() => this.setState({ loadingQuizzes: false }))
+    this.props.dispatch(actions.getQuestions(this.props.id))
+      .then(() => this.setState({ loadingQuestions: false }))
   }
 
   render() {
@@ -21,9 +27,13 @@ class QuizDetail extends React.Component {
       return <div>404 not found!</div>
     }
 
+    if (this.state.loadingQuestions || this.state.loadingQuizzes) {
+      return <div>Loading...</div>
+    }
+
     return (
       <div>
-        <PlayQuiz />
+        { this.props.children }
       </div>
     )
   }

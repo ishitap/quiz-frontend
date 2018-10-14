@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { Button, Card, Modal } from 'antd'
 import PageLayout from '../PageLayout'
 import EditTitle from './EditTitle'
-import EditQuestion from './EditQuestion'
+import Question from '../Question'
 import styles from './styles.module.css'
 import * as actions from '../../actions'
+import QuizDetail from '../QuizDetail'
 
 class EditQuiz extends React.Component {
   constructor(props) {
@@ -15,52 +16,56 @@ class EditQuiz extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // fetch quiz and questions
-  }
-
   render() {
-    let { quiz, questions } = this.props
+    let { quiz, questions, match } = this.props
     return (
       <PageLayout title="Edit Quiz">
-        <Card style={{marginBottom: 16}}>
-          <div className={styles.titleContainer}>
-            <EditTitle title={quiz.title} />
-            <Button onClick={this.handleDeleteQuiz.bind(this)} type="danger" icon="delete" ghost>Delete quiz</Button>
-          </div>
-        </Card>
-        <Card>
-          { questions.map((e, i) => <EditQuestion 
-            key={i}
-            {...e}
-            expanded={this.state.expanded === i}
-            onToggle={() => this.handleSelectQuestion(i)}
-            onDelete={() => this.handleDeleteQuestion(i)}
-            onSave={() => this.handleSaveQuestion(i)}
-          />)}
-          <Button type="primary" icon="plus" onClick={this.handleAddQuestion.bind(this)}>Add a question</Button>
-        </Card>
+        <QuizDetail id={match.params.id}>
+          <Card style={{marginBottom: 16}}>
+            <div className={styles.titleContainer}>
+              <EditTitle title={quiz && quiz.title} />
+              <Button onClick={this.handleDeleteQuiz.bind(this)} type="danger" icon="delete" ghost>Delete quiz</Button>
+            </div>
+          </Card>
+          <Card>
+            { questions.map((e, i) => <Question 
+              key={i}
+              {...e}
+              expanded={this.state.expanded === i}
+              onToggle={() => this.handleSelectQuestion(i)}
+              onDelete={() => this.handleDeleteQuestion(i)}
+              onSave={(data) => this.handleUpdateQuestion(i, data)}
+            />)}
+            <Button type="primary" icon="plus" onClick={this.handleAddQuestion.bind(this)}>Add a question</Button>
+          </Card>
+        </QuizDetail>
       </PageLayout>
     )
   }
 
   handleAddQuestion() {
-    const { dispatch, questions } = this.props
-    dispatch(actions.createQuestion({
-      title: "New question " + parseInt(Math.random() * 100, 10),
+    const { dispatch, questions, match } = this.props
+    dispatch(actions.createQuestion(match.params.id, {
+      title: "New question",
       options: ["Option 1", "Option 2"],
       correct: 0,
     }))
-    this.handleSelectQuestion(questions.length)
   }
 
   handleDeleteQuestion(i) {
-    this.props.dispatch(actions.deleteQuestion(i))
-    this.setState({ expanded: -1 })
+    // this.props.dispatch(actions.deleteQuestion(i))
+    // this.setState({ expanded: -1 })
   }
 
-  handleSaveQuestion(i) {
-
+  handleUpdateQuestion(i, data) {
+    let { dispatch, questions, match } = this.props
+    dispatch(actions.updateQuestion(match.params.id, questions[i]._id, i, data))
+      .then(res => {
+        if (res) {
+          // close once you save
+          this.setState({ expanded: -1 })
+        }
+      })
   }
 
   handleSelectQuestion(i) {
@@ -72,18 +77,16 @@ class EditQuiz extends React.Component {
       title: "Delete quiz?",
       content: "This quiz will be gone forever.",
       onOk: () => {
-        this.props.dispatch(actions.deleteQuiz(this.props.active_quiz))
-          .then(() => window.location = '/')
+        // this.props.dispatch(actions.deleteQuiz(this.props.active_quiz))
+        //   .then(() => window.location = '/')
       }
     })
   }
 }
 
 const mapStateToProps = (state, props) => {
-  const quizID = props.match.params.id
-  const quiz = state.quizzes.find(e => e.id === quizID)
   return {
-    quiz: quiz,
+    quiz: state.quizzes.find(e => e._id === props.match.params.id),
     questions: state.questions,
   }
 }

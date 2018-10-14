@@ -1,10 +1,12 @@
 import React from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import { connect } from 'react-redux'
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd'
-// import QuizDetail from '../QuizDetail'
-// import QuizList from '../QuizList'
-import PrivateRoute from './PrivateRoute'
+import PlayQuiz from '../PlayQuiz'
+import EditQuiz from '../EditQuiz'
+import QuizList from '../QuizList'
 import Login from '../Login'
+import { shouldLogin } from '../../auth'
 import styles from './style.module.css'
 
 const { Header, Content, Footer } = Layout
@@ -34,7 +36,11 @@ function LoggedInApp(props) {
         </div>
       </Header>
 
-    
+      <Content style={{ padding: '0 50px', display: 'flex', flexDirection: 'column', height: "100%" }}>
+        <Route exact path="/:id/play" component={PlayQuiz} />
+        <Route exact path="/:id/edit" component={EditQuiz} />
+        <Route exact path="/" component={QuizList} />
+      </Content>
 
       <Footer style={{ textAlign: 'center' }}>
         Quiz App ©2018 
@@ -43,8 +49,30 @@ function LoggedInApp(props) {
   )
 }
 
-/*
-  <Content style={{ padding: '0 50px', display: 'flex', flexDirection: 'column', height: "100%" }}>
-        <Route exact path="/" component={QuizList} />
-        <Route exact path='/:detail/:id' component={QuizDetail} />
-      </Content>*/
+// Private Route: if not logged in, redirects to login, otherwise proceed
+class UnconnectedPrivateRoute extends React.Component {
+  render() {
+    let { component, user } = this.props
+    if (shouldLogin(user)) {
+      return (
+        <Route render={props => (
+          <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+        )
+        } />
+      )
+    } 
+    return <Route component={component} />
+  }
+}
+
+
+const mapStateToProps = (state/*, props*/) => {
+  return {
+    user: state.user
+  }
+}
+
+let PrivateRoute = connect(mapStateToProps)(UnconnectedPrivateRoute)
