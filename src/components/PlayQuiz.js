@@ -5,6 +5,7 @@ import { Button, Card, Modal } from 'antd'
 import Question from './Question'
 import PageLayout from './PageLayout'
 import styles from './EditQuiz/styles.module.css'
+import * as actions from '../actions'
 import QuizDetail from './QuizDetail'
 
 class PlayQuiz extends React.Component {
@@ -19,6 +20,7 @@ class PlayQuiz extends React.Component {
   componentWillReceiveProps({ questions: newQuestions }) {
     // ideally you'd only shuffle when the GET finishes but 
     // this is fine for now
+    const { questions } = this.props
     let clone = update(newQuestions, {})
 
     // question.correct is the user selected answer (index), 
@@ -33,7 +35,7 @@ class PlayQuiz extends React.Component {
   }
 
   render() {
-    const { quiz, match} = this.props
+    const { quiz, questions, match} = this.props
     const { shuffled } = this.state
     return (
       <PageLayout title="Play Quiz">

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Icon } from 'antd'
+import { Input, Icon, Button } from 'antd'
 import styles from './styles.module.css'
 
 export default class ClickToEditInput extends React.Component {
