@@ -1,5 +1,6 @@
 import React from 'react'
 import { List, Icon, Input } from 'antd'
+import LinkStyleButton from '../LinkStyleButton'
 import styles from './styles.module.css'
 
 /*
@@ -20,6 +21,7 @@ export default function QuestionOptions({ options, correct, onMarkCorrect, onCha
     onDelete={onDelete && (() => onDelete && onDelete(i))}
   />
 
+  const addText = `Add an${options && options.length ? 'other' : ''} option`
   return (
     <div>
       { options && options.length ? <List
@@ -28,7 +30,7 @@ export default function QuestionOptions({ options, correct, onMarkCorrect, onCha
         dataSource={options}
         renderItem={renderOption}
       /> : false }
-      { onAdd && <a onClick={onAdd}>{`Add an${options && options.length ? 'other' : ''} option`}</a> }
+      { onAdd && <LinkStyleButton onClick={onAdd}>{addText}</LinkStyleButton> }
     </div>
   )
 }

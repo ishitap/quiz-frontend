@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Icon } from 'antd'
 import PlayQuiz from '../PlayQuiz'
 import EditQuiz from '../EditQuiz'
 import QuizList from '../QuizList'

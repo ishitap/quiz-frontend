@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import update from 'immutability-helper'
-import { List, Icon, Card } from 'antd'
-import ClickToEditInput from '../ClickToEditInput'
-import QuestionOptions from '../QuestionOptions'
-import * as actions from '../../actions'
-import styles from './styles.module.css'
+import { Icon, Card } from 'antd'
+import LinkStyleButton from './LinkStyleButton'
+import ClickToEditInput from './ClickToEditInput'
+import QuestionOptions from './QuestionOptions'
 
 const MIN_OPTS = 2
 const MAX_OPTS = 10
@@ -82,7 +81,7 @@ class Question extends React.Component {
        <Icon type="delete" onClick={onDelete}/>,
         "", // using this as a spacer instead of writing a custom actions bar...
         <span onClick={onToggle}>Cancel</span>,
-        <a style={{color: 'blue'}} onClick={() => onSave(this.state)}>Save</a>
+        <LinkStyleButton onClick={e => onSave(this.state)}>Save</LinkStyleButton>
     ]
   }
 
