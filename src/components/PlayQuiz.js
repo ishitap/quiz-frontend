@@ -73,7 +73,7 @@ class PlayQuiz extends React.Component {
     let grade = gradeQuiz(shuffled)
     Modal.confirm({
       title: `You got ${grade} out of ${shuffled.length} correct`,
-      onOk: () => window.location = '/',
+      onOk: () => this.props.history.push('/'),
       onCancel: () => {},
       okText: 'Try another quiz',
       cancelText: 'Return to quiz',

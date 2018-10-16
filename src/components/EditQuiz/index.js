@@ -109,7 +109,7 @@ class EditQuiz extends React.Component {
         dispatch(actions.deleteQuiz(match.params.id, quizIndex))
           .then(res => {
             if (res) {
-              window.location = '/'
+              this.props.history.push('/')
             }
           })
       }

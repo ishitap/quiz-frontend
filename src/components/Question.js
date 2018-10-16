@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import update from 'immutability-helper'
 import { Icon, Card } from 'antd'
+<<<<<<< HEAD:src/components/Question.js
+=======
+import LinkStyleButton from './LinkStyleButton'
+>>>>>>> linter:src/components/Question.js
 import ClickToEditInput from './ClickToEditInput'
 import QuestionOptions from './QuestionOptions'
 
@@ -81,7 +85,7 @@ class Question extends React.Component {
        <Icon type="delete" onClick={onDelete}/>,
         "", // using this as a spacer instead of writing a custom actions bar...
         <span onClick={onToggle}>Cancel</span>,
-        <Link style={{color: 'blue'}} onClick={() => onSave(this.state)}>Save</Link>
+        <LinkStyleButton onClick={e => onSave(this.state)}>Save</LinkStyleButton>
     ]
   }
 
