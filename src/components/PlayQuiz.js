@@ -23,11 +23,12 @@ class PlayQuiz extends React.Component {
     const { questions } = this.props
     let clone = update(newQuestions, {})
 
-    // question.correct is the user selected answer, 
-    // question.trueCorrect is the actual answer
+    // question.correct is the user selected answer (index), 
+    // question.trueCorrectValue is the actual answer 
     clone.forEach(e => {
-      e.trueCorrect = e.correct
+      e.trueCorrectValue = e.options[e.correct]
       e.correct = -1
+      e.options = shuffle(e.options)
     })
 
     this.setState({ shuffled: shuffle(clone) })
@@ -111,7 +112,7 @@ function shuffle(a) {
 
 function gradeQuiz(questions) {
   let reducer = (acc, cur) => {
-    return acc + (cur.trueCorrect === cur.correct ? 1 : 0)
+    return acc + (cur.trueCorrectValue === cur.options[cur.correct] ? 1 : 0)
   }
   return questions.reduce(reducer, 0)
 }
