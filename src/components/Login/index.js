@@ -6,7 +6,7 @@ import * as actions from '../../actions'
 import { shouldLogin } from '../../auth'
 import * as styles from './styles.module.css'
 
-class Login extends React.Component {
+class UnconnectedLogin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -95,6 +95,12 @@ class Login extends React.Component {
   }
 }
 
+function UnconnectedLogout({ dispatch }) {
+  return (
+    <Button ghost onClick={() => dispatch(actions.logout())}>Logout</Button>
+  )
+}
+
 
 const mapStateToProps = (state/*, props*/) => {
   return {
@@ -102,4 +108,7 @@ const mapStateToProps = (state/*, props*/) => {
   }
 }
 
-export default connect(mapStateToProps)(Login)
+const Login = connect(mapStateToProps)(UnconnectedLogin)
+const Logout = connect(mapStateToProps)(UnconnectedLogout)
+
+export { Login, Logout }

@@ -13,10 +13,15 @@ export function login(data) {
           return res
         } else {
           auth.setUser(res.body)
-          dispatch(setSuccess(USER, res.body))
+          return dispatch(setSuccess(USER, res.body))
         }
       })
   }
+}
+
+export function logout() {
+  auth.setUser(null)
+  return setSuccess(USER, null)
 }
 
 

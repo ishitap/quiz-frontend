@@ -1,7 +1,7 @@
 import request from 'superagent'
 import { getUser } from './auth'
 
-const host = process.env.REACT_APP_BACKEND || 'http://localhost:5000/api'
+const host = (process.env.REACT_APP_BACKEND || 'http://localhost:5000') + '/api'
 
 function headers() {
   return {

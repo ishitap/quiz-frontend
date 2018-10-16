@@ -5,7 +5,7 @@ import { Layout, Menu, Icon } from 'antd'
 import PlayQuiz from '../PlayQuiz'
 import EditQuiz from '../EditQuiz'
 import QuizList from '../QuizList'
-import Login from '../Login'
+import { Login, Logout } from '../Login'
 import { shouldLogin } from '../../auth'
 import styles from './style.module.css'
 
@@ -32,7 +32,7 @@ function LoggedInApp(props) {
         <div className={styles.logout}>
           <Icon type="user" />
           <span>ishita</span>
-          <a>Logout</a>
+          <Logout />
         </div>
       </Header>
 
