@@ -1,12 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import update from 'immutability-helper'
 import { Icon, Card } from 'antd'
-<<<<<<< HEAD:src/components/Question.js
-=======
 import LinkStyleButton from './LinkStyleButton'
->>>>>>> linter:src/components/Question.js
 import ClickToEditInput from './ClickToEditInput'
 import QuestionOptions from './QuestionOptions'
 
