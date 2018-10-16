@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { Input, Button, Card, Form } from 'antd'
+import { Input, Button, Card, Form, Icon } from 'antd'
 import * as actions from '../../actions'
 import { shouldLogin } from '../../auth'
 import * as styles from './styles.module.css'
@@ -97,7 +97,11 @@ class UnconnectedLogin extends React.Component {
 
 function UnconnectedLogout({ dispatch }) {
   return (
-    <Button ghost onClick={() => dispatch(actions.logout())}>Logout</Button>
+    <div className={styles.logout}>
+      <Icon type="user" />
+      <Button ghost onClick={() => dispatch(actions.logout())}>Logout</Button>
+      <Logout />
+    </div>
   )
 }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { List, Icon, Input } from 'antd'
 import styles from './styles.module.css'
 
@@ -28,7 +29,7 @@ export default function QuestionOptions({ options, correct, onMarkCorrect, onCha
         dataSource={options}
         renderItem={renderOption}
       /> : false }
-      { onAdd && <a onClick={onAdd}>{`Add an${options && options.length ? 'other' : ''} option`}</a> }
+      { onAdd && <Link onClick={onAdd}>{`Add an${options && options.length ? 'other' : ''} option`}</Link> }
     </div>
   )
 }

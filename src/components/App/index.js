@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Icon } from 'antd'
 import PlayQuiz from '../PlayQuiz'
 import EditQuiz from '../EditQuiz'
 import QuizList from '../QuizList'
@@ -29,11 +29,7 @@ function LoggedInApp(props) {
         <div className={styles.title}>
           <Icon type="home" />
         </div>
-        <div className={styles.logout}>
-          <Icon type="user" />
-          <span>ishita</span>
-          <Logout />
-        </div>
+        <Logout />
       </Header>
 
       <Content style={{ padding: '0 50px', display: 'flex', flexDirection: 'column', height: "100%" }}>
