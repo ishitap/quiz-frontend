@@ -20,7 +20,16 @@ class QuizList extends React.Component {
   }
 
   render() {
-    let createButton = <Button type="primary" icon="plus" onClick={() => this.setState({isCreating: true})}>Create Quiz</Button>
+    let createButton = (
+      <Button 
+        type="primary"
+        icon="plus"
+        onClick={() => this.setState({isCreating: true})}
+      >
+        Create Quiz
+      </Button>
+    )
+    
     return (
         <PageLayout title="My quizzes" actions={createButton} home={true}>
           <List
@@ -39,7 +48,10 @@ class QuizList extends React.Component {
     let actions = [<Link to={`/${_id}/edit`}><Icon type="edit"/></Link>]
     return (
         <List.Item key={index} actions={actions}>
-          <Link to={`/${_id}/play`}><Icon type="play"/>{title}</Link>
+          <Link to={`/${_id}/play`}>
+            <Icon type="play-circle" style={{marginRight: 8, verticalAlign: 'middle'}}/>
+            {title}
+          </Link>
         </List.Item>
     )
   }
@@ -51,10 +63,15 @@ class QuizList extends React.Component {
         title="Create a new quiz"
         visible={isCreating}
         okText='Create Quiz'
+        okButtonProps={{ disabled: !newQuizTitle || !newQuizTitle.length }}
         onCancel={() => this.setState({ isCreating: false, newQuizTitle: ""})}
         onOk={this.handleCreate}
       >
-        <Input value={newQuizTitle} onChange={e => this.setState({newQuizTitle: e.target.value})} placeholder="New quiz title" />
+        <Input 
+          value={newQuizTitle}
+          onChange={e => this.setState({newQuizTitle: e.target.value})}
+          placeholder="New quiz title" 
+        />
       </Modal>
     )
   }

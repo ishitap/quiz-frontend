@@ -123,4 +123,4 @@ class Question extends React.Component {
   }
 }
 
-export default connect(() => {})(Question)
+export default connect(() => { return {} })(Question)

@@ -10,6 +10,8 @@ export default class EditTitle extends React.Component {
       draft: props.title
     }
     this.inputRef = React.createRef()
+    this.handleStopEditing = this.handleStopEditing.bind(this)
+    this.handleUpdateTitle = this.handleUpdateTitle.bind(this)
   }
 
   render() {
@@ -25,8 +27,14 @@ export default class EditTitle extends React.Component {
           inputRef={this.inputRef}
         />
         {isEditing && [
-          <Button type="primary" icon="check" />,
-          <Button icon="close" onClick={() => this.setState({isEditing: false})} />
+          <Button 
+            type="primary" 
+            icon="check" 
+            onClick={this.handleUpdateTitle} 
+            key="edit-confirm"
+            disabled={!draft || !draft.length}
+          />,
+          <Button icon="close" onClick={this.handleStopEditing} key="edit-cancel" />
         ]}
       </div>
     )
@@ -38,11 +46,15 @@ export default class EditTitle extends React.Component {
     })
   }
 
+  handleStopEditing() {
+    this.setState({ isEditing: false })
+  }
+
   handleUpdateTitle() {
     this.props.onUpdateTitle({ title: this.state.draft })
       .then(res => {
         if (res) {
-          this.setState({ isEditing: false })
+          this.handleStopEditing()
         }
       })
   }

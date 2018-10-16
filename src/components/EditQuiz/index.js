@@ -14,6 +14,9 @@ class EditQuiz extends React.Component {
     this.state = {
       expanded: -1
     }
+    this.handleUpdateQuiz = this.handleUpdateQuiz.bind(this)
+    this.handleAddQuestion = this.handleAddQuestion.bind(this)
+    this.handleDeleteQuiz = this.handleDeleteQuiz.bind(this)
   }
 
   render() {
@@ -28,7 +31,7 @@ class EditQuiz extends React.Component {
                 onUpdateTitle={this.handleUpdateQuiz}
               />
               <Button 
-                onClick={this.handleDeleteQuiz.bind(this)}
+                onClick={this.handleDeleteQuiz}
                 type="danger"
                 icon="delete"
                 ghost
@@ -46,11 +49,7 @@ class EditQuiz extends React.Component {
               onDelete={() => this.handleDeleteQuestion(i)}
               onSave={(data) => this.handleUpdateQuestion(i, data)}
             />)}
-            <Button
-              type="primary"
-              icon="plus"
-              onClick={this.handleAddQuestion.bind(this)}
-            >
+            <Button type="primary" icon="plus" onClick={this.handleAddQuestion} >
               Add a question
             </Button>
           </Card>
@@ -72,8 +71,13 @@ class EditQuiz extends React.Component {
   }
 
   handleDeleteQuestion(i) {
-    // this.props.dispatch(actions.deleteQuestion(i))
-    // this.setState({ expanded: -1 })
+    let { dispatch, questions, match } = this.props
+    dispatch(actions.deleteQuestion(match.params.id, questions[i]._id, i))
+      .then(res => {
+        if (res) {
+          this.setState({ expanded: -1 })
+        }
+      })
   }
 
   handleUpdateQuestion(i, data) {
@@ -93,16 +97,21 @@ class EditQuiz extends React.Component {
 
   handleUpdateQuiz(data) {
     let { dispatch, match, quizIndex } = this.props
-    //return dispatch(actions.updateQuiz(match.params.id, quizIndex, data))
+    return dispatch(actions.updateQuiz(match.params.id, quizIndex, data))
   }
 
   handleDeleteQuiz(i) {
+    let { dispatch, match, quizIndex } = this.props
     Modal.confirm({
       title: "Delete quiz?",
       content: "This quiz will be gone forever.",
       onOk: () => {
-        // this.props.dispatch(actions.deleteQuiz(this.props.active_quiz))
-        //   .then(() => window.location = '/')
+        dispatch(actions.deleteQuiz(match.params.id, quizIndex))
+          .then(res => {
+            if (res) {
+              window.location = '/'
+            }
+          })
       }
     })
   }

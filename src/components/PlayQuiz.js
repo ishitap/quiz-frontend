@@ -51,7 +51,9 @@ class PlayQuiz extends React.Component {
               expanded={true}
               onMarkCorrect={(oi) => this.handleMarkCorrect(i, oi)}
             />)}
-            <Button type="primary" onClick={this.handleGradeQuiz}>Grade me now!</Button>
+            <Button type="primary" onClick={this.handleGradeQuiz}>
+              Grade me now!
+            </Button>
           </Card>
         </QuizDetail>
       </PageLayout>
@@ -70,9 +72,12 @@ class PlayQuiz extends React.Component {
   handleGradeQuiz() {
     const { shuffled } = this.state
     let grade = gradeQuiz(shuffled)
-    Modal.info({
+    Modal.confirm({
       title: `You got ${grade} out of ${shuffled.length} correct`,
-      onOk: () => {},
+      onOk: () => window.location = '/',
+      onCancel: () => {},
+      okText: 'Try another quiz',
+      cancelText: 'Return to quiz',
       iconType: 'smile',
     })
   }
@@ -105,5 +110,8 @@ function shuffle(a) {
 }
 
 function gradeQuiz(questions) {
-  return questions.reduce((acc, cur) => acc + (cur.trueCorrect === cur.correct ? 1 : 0), 0)
+  let reducer = (acc, cur) => {
+    return acc + (cur.trueCorrect === cur.correct ? 1 : 0)
+  }
+  return questions.reduce(reducer, 0)
 }

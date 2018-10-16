@@ -19,6 +19,9 @@ export function login(data) {
   }
 }
 
+
+// --- fetch 
+
 export function getQuizzes(data) {
   return dispatch => {
     return api.get('/quizzes')
@@ -44,6 +47,9 @@ export function getQuestions(quizID) {
       })
   }
 }
+
+
+// --- create
 
 export function createQuiz(data) {
   return dispatch => {
@@ -76,6 +82,23 @@ export function createQuestion(quizID, data) {
   }
 }
 
+
+// --- update
+
+export function updateQuiz(quizID, index, data) {
+  return dispatch => {
+    return api.put(`/quizzes/${quizID}`)
+      .send(data)
+      .then(res => {
+        if (!res.ok) {
+          return null
+        } else {
+          return dispatch(updateSuccess(QUIZZES, index, data))
+        }
+      })
+  }
+}
+
 export function updateQuestion(quizID, questionID, index, data) {
   return dispatch => {
     return api.put(`/quizzes/${quizID}/questions/${questionID}`)
@@ -85,6 +108,35 @@ export function updateQuestion(quizID, questionID, index, data) {
           return null
         } else {
           return dispatch(updateSuccess(QUESTIONS, index, data))
+        }
+      })
+  }
+}
+
+
+// --- delete
+
+export function deleteQuiz(quizID, index) {
+  return dispatch => {
+    return api.del(`/quizzes/${quizID}`)
+      .then(res => {
+        if (!res.ok) {
+          return null
+        } else {
+          return dispatch(deleteSuccess(QUIZZES, index))
+        }
+      })
+  }
+}
+
+export function deleteQuestion(quizID, questionID, index) {
+  return dispatch => {
+    return api.del(`/quizzes/${quizID}/questions/${questionID}`)
+      .then(res => {
+        if (!res.ok) {
+          return null
+        } else {
+          return dispatch(deleteSuccess(QUESTIONS, index))
         }
       })
   }

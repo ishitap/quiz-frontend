@@ -24,3 +24,8 @@ export function put(path) {
   return request.put(host + path)
     .set(headers())
 }
+
+export function del(path) {
+  return request('DELETE', host + path)
+    .set(headers())
+}
