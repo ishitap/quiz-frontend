@@ -82,7 +82,6 @@ class Question extends React.Component {
         "", // using this as a spacer instead of writing a custom actions bar...
         <span onClick={onToggle}>Cancel</span>,
         <LinkStyleButton onClick={e => onSave(this.state)}>Save</LinkStyleButton>
-        <a style={{color: 'blue'}} onClick={() => onSave(this.state)}>Save</a>
     ]
   }
 

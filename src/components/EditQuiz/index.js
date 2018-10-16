@@ -62,7 +62,7 @@ class EditQuiz extends React.Component {
   // --- EVENT HANDLERS
 
   handleAddQuestion() {
-    const { dispatch, questions, match } = this.props
+    const { dispatch, match } = this.props
     dispatch(actions.createQuestion(match.params.id, {
       title: "New question",
       options: ["Option 1", "Option 2"],
